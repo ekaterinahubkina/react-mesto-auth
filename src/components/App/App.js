@@ -9,6 +9,10 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup';
 import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup';
 import AddPlacePopup from '../AddPlacePopup/AddPlacePopup';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
 
@@ -21,6 +25,8 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+
+  const[loggedIn, setLoggedIn] =React.useState(true);
 
   React.useEffect(() => {
     api.getUserData()
@@ -126,17 +132,31 @@ function App() {
 
 
   return (
+    
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <Header />
-      <Main onEditProfile={handleEditProfileClick}
-        onEditAvatar={handleEditAvatarClick}
-        onAddPlace={handleAddPlaceClick}
-        onCardClick={handleCardClick}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
-        cards={cards} />
-      <Footer />
+      <Switch>
+        {/* <ProtectedRoute exact path='/' loggedIn={loggedIn} component={Main} /> */}
+        <Route exact path='/'>
+          {!loggedIn && <Redirect to='/login' />}
+          <Main onEditProfile={handleEditProfileClick}
+            onEditAvatar={handleEditAvatarClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards} />
+          <Footer />  
+        </Route>
+        <Route path='/login'>
+          <Login />
+        </Route>
+        <Route path='/register'>
+          <Register />
+        </Route>
+      </Switch>
+      
       <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} isLoading={isLoading}/>
       <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpateAvatar={handleUpdateAvatar} isLoading={isLoading}/>
       <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isLoading={isLoading}/>
@@ -145,6 +165,7 @@ function App() {
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
     </div>
     </CurrentUserContext.Provider>
+    
   );
 }
 

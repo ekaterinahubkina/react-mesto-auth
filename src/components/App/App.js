@@ -14,6 +14,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import auth from '../../utils/auth';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
-  const[loggedIn, setLoggedIn] =React.useState(true);
+  const[isLoggedIn, setIsLoggedIn] =React.useState(false);
 
   React.useEffect(() => {
     api.getUserData()
@@ -135,6 +136,16 @@ function App() {
         })
     }
 
+    function handleRegisterSubmit ({ password, email}) {
+      auth.register({password, email})
+            .then((res) => {
+              if(res) {
+                setIsInfoTooltipOpen(true)
+              }
+              console.log(res)
+            })
+    }
+
 
   return (
     
@@ -144,7 +155,7 @@ function App() {
       <Switch>
         {/* <ProtectedRoute exact path='/' loggedIn={loggedIn} component={Main} /> */}
         <Route exact path='/'>
-          {!loggedIn && <Redirect to='/login' />}
+          {!isLoggedIn && <Redirect to='/login' />}
           <Main onEditProfile={handleEditProfileClick}
             onEditAvatar={handleEditAvatarClick}
             onAddPlace={handleAddPlaceClick}
@@ -158,7 +169,7 @@ function App() {
           <Login />
         </Route>
         <Route path='/register'>
-          <Register />
+          <Register isOpen={isInfoTooltipOpen} onRegister={handleRegisterSubmit} onClose={closeAllPopups}/>
         </Route>
       </Switch>
       
@@ -168,7 +179,7 @@ function App() {
       <PopupWithForm title={'Вы уверены?'} name={'confirm'} buttonText={'Да'}>
       </PopupWithForm>
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
-      <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups}/>
+      
     </div>
     </CurrentUserContext.Provider>
     

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 
@@ -56,4 +56,4 @@ function Register ({ isOpen, onRegister, onClose }) {
     );
 }
 
-export default withRouter(Register);
+export default Register;

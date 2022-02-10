@@ -9,11 +9,10 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup';
 import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup';
 import AddPlacePopup from '../AddPlacePopup/AddPlacePopup';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import InfoTooltip from '../InfoTooltip/InfoTooltip';
 import auth from '../../utils/auth';
 
 function App() {
@@ -32,6 +31,9 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   const[isLoggedIn, setIsLoggedIn] =React.useState(false);
+
+
+  const history = useHistory();
 
   React.useEffect(() => {
     api.getUserData()
@@ -146,6 +148,32 @@ function App() {
             })
     }
 
+    function handleLoginSubmit ({ password, email}) {
+      auth.login ({password, email})
+        .then((res) => {
+          if(res) {
+            // setIsLoggedIn(true);
+            console.log(res)
+            localStorage.setItem('token', res.token);
+            // history.push('/');
+          }
+          console.log(localStorage.getItem('token'))
+        })
+        .then(tokenCheck)
+    }
+
+    function tokenCheck () {
+      if (localStorage.getItem('token')) {
+        const token = localStorage.getItem('token');
+        auth.authorization({token})
+          .then((res) => {
+            console.log(res);
+            setIsLoggedIn(true);
+            history.push('/');
+          })
+      }
+    }
+
 
   return (
     
@@ -166,7 +194,7 @@ function App() {
           <Footer />  
         </Route>
         <Route path='/login'>
-          <Login />
+          <Login onLogin={handleLoginSubmit}/>
         </Route>
         <Route path='/register'>
           <Register isOpen={isInfoTooltipOpen} onRegister={handleRegisterSubmit} onClose={closeAllPopups}/>

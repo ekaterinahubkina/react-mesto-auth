@@ -14,18 +14,37 @@ class Auth {
 
     }
 
-    register({password, email}) {
+    register({ password, email }) {
         return fetch(`${this.url}/signup`, {
             method: 'POST',
             headers: {
-                // authorization: this.token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({password, email})
         })
-            .then(
-                console.log(JSON.stringify({password, email})),
-                this._getResponseData);
+            .then(this._getResponseData);
+    }
+
+    login({ password, email }) {
+        return fetch(`${this.url}/signin`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({password, email})
+        })
+            .then(this._getResponseData);
+    }
+
+    authorization({token}) {
+        return fetch(`${this.url}/users/me`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+            .then(this._getResponseData);
     }
 }
 

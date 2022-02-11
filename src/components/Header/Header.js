@@ -27,6 +27,8 @@ function Header ({loggedIn, userEmail, location, onExit}) {
         }
 
     const userEmailText = loggedIn ? userEmail : '';
+    const exit = () => loggedIn && onExit;
+    
 
 
     return (
@@ -36,7 +38,7 @@ function Header ({loggedIn, userEmail, location, onExit}) {
             </a>
             <div className="header__auth">
                 <p className="header__email">{userEmailText}</p>
-                <Link to={button.link} className="header__button" onClick={ location.pathname === '/' && onExit }>{button.text}</Link>
+                <Link to={button.link} className="header__button" onClick={ exit }>{button.text}</Link>
             </div>
         </header>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -37,11 +37,27 @@ function App() {
 
   const history = useHistory();
   const location = useLocation();
-  console.log(location)
+  console.log(location);
+
+  
+
+  const tokenCheck = useCallback(() => {
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
+      auth.tokenCheck({token})
+        .then((data) => {
+          console.log(data);
+          setUserEmail(data.data.email);            
+          setIsLoggedIn(true);
+          //history.push('/');
+        })
+        .catch(err => console.log(err))
+    }
+  }, [])
 
   React.useEffect(() => {
-    tokenCheck();
-  }, []);
+    tokenCheck()
+  }, [tokenCheck])
 
   React.useEffect(()=>{
     if (isLoggedIn){
@@ -167,7 +183,8 @@ function App() {
       auth.login ({password, email})
         .then((res) => {
             setIsLoggedIn(true);
-            console.log(res)
+            console.log(res);
+            setUserEmail(email);
             localStorage.setItem('token', res.token);
             history.push('/');
         })
@@ -176,19 +193,19 @@ function App() {
 
     
 
-    function tokenCheck () {
-      if (localStorage.getItem('token')) {
-        const token = localStorage.getItem('token');
-        auth.tokenCheck({token})
-          .then((data) => {
-            console.log(data);
-            setUserEmail(data.data.email);            
-            setIsLoggedIn(true);
-            history.push('/');
-          })
-          .catch(err => console.log(err))
-      }
-    }
+    // function tokenCheck () {
+    //   if (localStorage.getItem('token')) {
+    //     const token = localStorage.getItem('token');
+    //     auth.tokenCheck({token})
+    //       .then((data) => {
+    //         console.log(data);
+    //         setUserEmail(data.data.email);            
+    //         setIsLoggedIn(true);
+    //         history.push('/');
+    //       })
+    //       .catch(err => console.log(err))
+    //   }
+    // }
 
     function handleExit () {
       setIsLoggedIn(false);

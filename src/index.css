@@ -61,3 +61,6 @@
 @import url(./blocks/popup/__container/_type/popup__container_type_infoToool.css);
 @import url(./blocks/popup/__figcaption/_type/popup__figcaption_type_infoTool.css);
 @import url(./blocks/header/__auth/header__auth.css);
+@import url(./blocks/header/__button/header__button.css);
+@import url(./blocks/header/__email/header__email.css);
+@import url(./blocks/form/__link/form__link.css);

@@ -16,9 +16,11 @@ function Login ({ onLogin }) {
 
     function handleSubmit (event) {
         event.preventDefault();
-        onLogin({ password, email })
-
+        onLogin({ password, email });
+        setEmail('');
+        setPassword('');     
     }
+
 
     return (
         <div className="form__container">

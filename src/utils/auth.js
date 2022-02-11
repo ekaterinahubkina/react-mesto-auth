@@ -36,7 +36,7 @@ class Auth {
             .then(this._getResponseData);
     }
 
-    authorization({token}) {
+    tokenCheck({token}) {
         return fetch(`${this.url}/users/me`, {
             method: 'GET',
             headers: {

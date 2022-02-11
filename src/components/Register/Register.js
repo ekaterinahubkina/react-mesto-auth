@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 
-function Register ({ isOpen, onRegister, onClose }) {
+function Register ({ isOpen, onRegister, onClose, isRegistrationOk }) {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -49,9 +49,9 @@ function Register ({ isOpen, onRegister, onClose }) {
                     <span className="form__error"></span>
                     <button className="form__button form__button_type_register">Зарегистрироваться</button>
                 </form>
-                <span className="form__sign-in">Уже зарегистрированы? <Link to="/login">Войти</Link></span>
+                <span className="form__sign-in">Уже зарегистрированы? <Link className="form__link" to="/login">Войти</Link></span>
             </div>
-            <InfoTooltip isOpen={isOpenInfotool} onClose={onClose}/>
+            <InfoTooltip isOpen={isOpenInfotool} onClose={onClose} isRegistrationOk={isRegistrationOk}/>
         </>
     );
 }

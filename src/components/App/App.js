@@ -49,7 +49,6 @@ function App() {
           console.log(data);
           setUserEmail(data.data.email);            
           setIsLoggedIn(true);
-          //history.push('/');
         })
         .catch(err => console.log(err))
     }
@@ -175,7 +174,7 @@ function App() {
             .catch((err) => {
               console.log(err);
               setIsInfoTooltipOpen(true);
-              setIsRegistrationOk(false)
+              setIsRegistrationOk(false);
             })
     }
 
@@ -188,24 +187,12 @@ function App() {
             localStorage.setItem('token', res.token);
             history.push('/');
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          console.log(err);
+          setIsInfoTooltipOpen(true);
+          setIsRegistrationOk(false);
+        })
     }
-
-    
-
-    // function tokenCheck () {
-    //   if (localStorage.getItem('token')) {
-    //     const token = localStorage.getItem('token');
-    //     auth.tokenCheck({token})
-    //       .then((data) => {
-    //         console.log(data);
-    //         setUserEmail(data.data.email);            
-    //         setIsLoggedIn(true);
-    //         history.push('/');
-    //       })
-    //       .catch(err => console.log(err))
-    //   }
-    // }
 
     function handleExit () {
       setIsLoggedIn(false);
@@ -230,7 +217,7 @@ function App() {
           <Footer />
         </ProtectedRoute>
         <Route path='/login'>
-          <Login onLogin={handleLoginSubmit}/>
+          <Login onLogin={handleLoginSubmit} isOpen={isInfoTooltipOpen} isRegistrationOk={isRegistrationOk} onClose={closeAllPopups}/>
         </Route>
         <Route path='/register'>
           <Register isOpen={isInfoTooltipOpen} isRegistrationOk={isRegistrationOk} onRegister={handleRegisterSubmit} onClose={closeAllPopups}/>

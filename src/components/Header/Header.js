@@ -23,11 +23,19 @@ function Header ({loggedIn, userEmail, location, onExit}) {
                 button.text = 'Войти';
                 button.link = '/login';
                 return button;
+
+                default:
+                button.text = '';
+                button.link = '';
+                return
+             
             }
         }
 
     const userEmailText = loggedIn ? userEmail : '';
-    const exit = () => loggedIn && onExit;
+    function exit() {
+       loggedIn && onExit();
+    } 
     
 
 

@@ -10,8 +10,6 @@ function Register ({ isOpen, onRegister, onClose, isRegistrationOk }) {
 
     //const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
 
-    // const [registrationInfo, setRegistrationInfo] = React.useState({ email: '', password: '' });
-
     function handleEmailChange (event) {
         setEmail(event.target.value);
     }

@@ -64,3 +64,11 @@
 @import url(./blocks/header/__button/header__button.css);
 @import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/form/__link/form__link.css);
+@import url(./blocks/burger-menu/__line/burger-menu__line.css);
+@import url(./blocks/burger-menu/burger-menu.css);
+@import url(./blocks/header/__auth/header__auth_mobile.css);
+@import url(./blocks/header/__button/header__button_mobile.css);
+@import url(./blocks/header/__auth/header__auth_hidden.css);
+@import url(./blocks/burger-menu/burger-menu_hidden.css);
+@import url(./blocks/burger-menu/__close-btn/burger-menu__close-btn.css);
+@import url(./blocks/burger-menu/__close-btn/burger-menu__close-btn_hidden.css);

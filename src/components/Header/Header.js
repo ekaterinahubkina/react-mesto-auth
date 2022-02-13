@@ -21,17 +21,17 @@ function Header ({loggedIn, userEmail, location, onExit}) {
             switch (location.pathname) {
                 case '/': 
                 button.text = 'Выйти';
-                button.link = '/login';
+                button.link = '/sign-in';
                 return button;
 
-                case '/login': 
+                case '/sign-in': 
                 button.text = 'Регистрация';
-                button.link = '/register';
+                button.link = '/sign-up';
                 return button;
 
-                case '/register': 
+                case '/sign-up': 
                 button.text = 'Войти';
-                button.link = '/login';
+                button.link = '/sign-in';
                 return button;
 
                 default:

@@ -34,23 +34,21 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] =React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
 
-
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
-
-  
 
   const tokenCheck = useCallback(() => {
-    if (localStorage.getItem('token')) {
-      const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token) {      
       auth.tokenCheck({token})
         .then((data) => {
-          console.log(data);
-          setUserEmail(data.data.email);            
-          setIsLoggedIn(true);
+            setUserEmail(data.data.email);            
+            setIsLoggedIn(true);
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log(err);
+          localStorage.removeItem('token');
+        })
     }
   }, [])
 
@@ -67,9 +65,9 @@ function App() {
   React.useEffect(() => {
     api.getUserData()
       .then(res => {
-        console.log(res);
         setCurrentUser(res);
       })
+      .catch(err => console.log(err));
   }, [])
 
   function handleEditAvatarClick () {
@@ -98,13 +96,12 @@ function App() {
 
   function handleUpdateUser ({ name, about }) {
     setIsLoading(true);
-    console.log({name, about})
     api.editUserData({ name, about })
       .then((res) => {
-        console.log(res)
         setCurrentUser(res);
         closeAllPopups();
       })
+      .catch(err => console.log(err))
       .finally(() => {
         setIsLoading(false);
       })
@@ -114,10 +111,10 @@ function App() {
     setIsLoading(true);
     api.editUserAvatar({ avatar })
       .then((res) => {
-        console.log(res);
         setCurrentUser(res);
         closeAllPopups();
       })
+      .catch(err => console.log(err))
       .finally(() => {
         setIsLoading(false);
       })
@@ -125,26 +122,24 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(like => like._id === currentUser._id);
-
     api.changeLikeCardStatus(card, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c))
-    }) 
+      })
+      .catch(err => console.log(err))
     }
 
     function handleCardDelete(card) {
-
         api.deleteMyCard(card)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
                 setCards((state) => state.filter((c) => c._id !== card._id))
             })
+            .catch(err => console.log(err))
     }
 
     React.useEffect(() => {
         api.getCards()
             .then(res => {
-                console.log(res);
                 setCards(res);
             })
             .catch(err => {
@@ -156,10 +151,10 @@ function App() {
       setIsLoading(true);
       api.addNewCard({ name, link})
         .then((newCard) => {
-          console.log(newCard);
           setCards([newCard, ...cards]);
           closeAllPopups();
         })
+        .catch(err => console.log(err))
         .finally(() => {
           setIsLoading(false);
         })
@@ -168,13 +163,14 @@ function App() {
     function handleRegisterSubmit ({ password, email}) {
       auth.register({password, email})
             .then(() => {
-                setIsInfoTooltipOpen(true);
-                setIsRegistrationOk(true);
+              setIsInfoTooltipOpen(true);
+              setIsRegistrationOk(true);
+              history.push('/sign-in')    
             })
             .catch((err) => {
               console.log(err);
               setIsInfoTooltipOpen(true);
-              setIsRegistrationOk(false);
+              setIsRegistrationOk(false); 
             })
     }
 
@@ -182,10 +178,8 @@ function App() {
       auth.login ({password, email})
         .then((res) => {
             setIsLoggedIn(true);
-            console.log(res);
             setUserEmail(email);
             localStorage.setItem('token', res.token);
-            history.push('/');
         })
         .catch((err) => {
           console.log(err);
@@ -216,10 +210,10 @@ function App() {
             cards={cards} />
           <Footer />
         </ProtectedRoute>
-        <Route path='/login'>
+        <Route path='/sign-in'>
           <Login onLogin={handleLoginSubmit} isOpen={isInfoTooltipOpen} isRegistrationOk={isRegistrationOk} onClose={closeAllPopups}/>
         </Route>
-        <Route path='/register'>
+        <Route path='/sign-up'>
           <Register isOpen={isInfoTooltipOpen} isRegistrationOk={isRegistrationOk} onRegister={handleRegisterSubmit} onClose={closeAllPopups}/>
         </Route>
       </Switch>

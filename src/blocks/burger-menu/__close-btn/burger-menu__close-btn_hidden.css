@@ -1,5 +1,3 @@
-@media screen and (max-width: 767px) {
-    .burger-menu__close-btn_hidden {
-        display: none;
-    }
+.burger-menu__close-btn_hidden {
+    display: none;
 }

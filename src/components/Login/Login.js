@@ -6,7 +6,7 @@ function Login ({ onLogin, isOpen, onClose, isRegistrationOk }) {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    let isOpenInfotool = isOpen;
+    const isOpenInfotool = isOpen;
 
     function handleEmailChange (event) {
         setEmail(event.target.value);
@@ -22,7 +22,6 @@ function Login ({ onLogin, isOpen, onClose, isRegistrationOk }) {
         setEmail('');
         setPassword('');     
     }
-
 
     return (
         <>

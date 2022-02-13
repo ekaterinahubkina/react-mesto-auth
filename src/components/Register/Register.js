@@ -7,8 +7,7 @@ function Register ({ isOpen, onRegister, onClose, isRegistrationOk }) {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-
-    //const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+    const isOpenInfotool = isOpen;
 
     function handleEmailChange (event) {
         setEmail(event.target.value);
@@ -17,22 +16,11 @@ function Register ({ isOpen, onRegister, onClose, isRegistrationOk }) {
     function handlePasswordChange (event) {
         setPassword(event.target.value);
     }
-    let isOpenInfotool = isOpen;
+
     function handleSubmit (event) {
         event.preventDefault();
-        isOpenInfotool = true;
-        console.log({email, password});
-
         onRegister({ email, password })
-        // auth.register({password, email})
-        //     .then((res) => console.log(res))
-
     }
-
-    // React.useEffect(() => {
-    //     setEmail('');
-    //     setPassword('');
-    // }, [onSubmit])
 
     return (
         <>
@@ -47,7 +35,7 @@ function Register ({ isOpen, onRegister, onClose, isRegistrationOk }) {
                     <span className="form__error"></span>
                     <button className="form__button form__button_type_register">Зарегистрироваться</button>
                 </form>
-                <span className="form__sign-in">Уже зарегистрированы? <Link className="form__link" to="/login">Войти</Link></span>
+                <span className="form__sign-in">Уже зарегистрированы? <Link className="form__link" to="/sign-in">Войти</Link></span>
             </div>
             <InfoTooltip isOpen={isOpenInfotool} onClose={onClose} isRegistrationOk={isRegistrationOk}/>
         </>

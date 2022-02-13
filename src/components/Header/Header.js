@@ -4,6 +4,16 @@ import { Link } from "react-router-dom";
 
 function Header ({loggedIn, userEmail, location, onExit}) {
 
+    const [isMobileAuthOpen, setIsMobileAuthOpen] = React.useState(false);
+
+    function openMobileAuth () {
+        setIsMobileAuthOpen(true);
+    }
+
+    function closeMobileAuth () {
+        setIsMobileAuthOpen(false);
+    }
+
     let button = {text: '', link: ''};
     button = headerButtonText();    
 
@@ -11,17 +21,17 @@ function Header ({loggedIn, userEmail, location, onExit}) {
             switch (location.pathname) {
                 case '/': 
                 button.text = 'Выйти';
-                button.link = '/login';
+                button.link = '/sign-in';
                 return button;
 
-                case '/login': 
+                case '/sign-in': 
                 button.text = 'Регистрация';
-                button.link = '/register';
+                button.link = '/sign-up';
                 return button;
 
-                case '/register': 
+                case '/sign-up': 
                 button.text = 'Войти';
-                button.link = '/login';
+                button.link = '/sign-in';
                 return button;
 
                 default:
@@ -33,6 +43,7 @@ function Header ({loggedIn, userEmail, location, onExit}) {
         }
 
     const userEmailText = loggedIn ? userEmail : '';
+
     function exit() {
        loggedIn && onExit();
     } 
@@ -40,15 +51,34 @@ function Header ({loggedIn, userEmail, location, onExit}) {
 
 
     return (
+        <>
+        {(location.pathname === '/' && isMobileAuthOpen) && 
+            <div className="header__auth header__auth_mobile">
+                <p className="header__email">{userEmailText}</p>
+                <Link to={button.link} className="header__button header__button_mobile" onClick={ exit }>{button.text}</Link>
+            </div>}
+        
         <header className="header">
             <a className="logo" href="#">
                 <img className="logo__image" src={logo} alt="Логотип"/>
             </a>
-            <div className="header__auth">
+            {location.pathname === '/' &&
+            <>
+                <button className={`${isMobileAuthOpen ? "burger-menu__close-btn" : "burger-menu__close-btn_hidden"}`} onClick={closeMobileAuth}>
+                </button>
+                <div className={`burger-menu ${isMobileAuthOpen && "burger-menu_hidden"}`} onClick={openMobileAuth}>
+                    <span className="burger-menu__line"></span>
+                    <span className="burger-menu__line"></span>
+                    <span className="burger-menu__line"></span>
+                </div>
+            </>}
+
+            <div className={`header__auth ${location.pathname === '/' && "header__auth_hidden"}`} >
                 <p className="header__email">{userEmailText}</p>
                 <Link to={button.link} className="header__button" onClick={ exit }>{button.text}</Link>
             </div>
         </header>
+        </>
     );
 }
 

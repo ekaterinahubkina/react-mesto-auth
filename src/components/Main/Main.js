@@ -4,6 +4,12 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Main (props) {
 
+    // const [isHovered, setIsHovered] = React.useState(false);
+    // function handleHover () {
+    //     setIsHovered(!isHovered);
+    // } 
+    // не работает, onMouseOver не меняет state
+
     const currentUser = React.useContext(CurrentUserContext);
 
     return (
